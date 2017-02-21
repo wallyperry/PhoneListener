@@ -28,6 +28,8 @@ public class RegisterActivity extends BaseActivity implements M_View.DataInject 
     EditText inputPhone;
     @Bind(R.id.register_inputId)
     EditText inputId;
+    @Bind(R.id.register_info)
+    EditText inputInfo;
     @Bind(R.id.register_msgLL)
     LinearLayout msgLL;
     @Bind(R.id.register_msg)
@@ -61,14 +63,17 @@ public class RegisterActivity extends BaseActivity implements M_View.DataInject 
     private void injectionData() {
         String inPhone = inputPhone.getText().toString().trim();
         String inId = inputId.getText().toString().trim();
+        String inInfo = inputInfo.getText().toString().trim();
         if (inPhone.length() != 11) {
             ToastShow("请输入11位手机号码");
+        } else if (inInfo.length() < 1) {
+            ToastShow("请输入备注信息");
         } else if (inId.length() < 1) {
             ToastShow("请输入控制端ID");
         } else {
             progressDialog.show();
             M_Presenter.DataInject injectPresenter = new DataInjectImpl(this);
-            injectPresenter.dataInject(inPhone, inId);
+            injectPresenter.dataInject(inPhone, inId, inInfo);
         }
     }
 

@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 获取当前位置
  * Created by 培龙 on 2017/2/21.
  */
 

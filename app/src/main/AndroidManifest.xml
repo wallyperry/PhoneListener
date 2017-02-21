@@ -34,13 +34,18 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="8622f08d72371339f119f537ced861f5" />
-
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.StartPageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" /><!-- 显示数据 -->
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" /><!-- 定义成浏览器类型，有URL需要处理时会过滤 -->
+                <data
+                    android:host="listener.com"
+                    android:scheme="wpl" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name="com.wpl.phonelistener.activity.RegisterActivity" />

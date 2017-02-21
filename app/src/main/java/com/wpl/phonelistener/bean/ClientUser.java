@@ -10,6 +10,15 @@ public class ClientUser extends BmobObject {
     private String phone;
     private boolean isFeedback;
     private _User belongTo;
+    private String phoneInfo;
+
+    public String getPhoneInfo() {
+        return phoneInfo;
+    }
+
+    public void setPhoneInfo(String phoneInfo) {
+        this.phoneInfo = phoneInfo;
+    }
 
     public String getPhone() {
         return phone;

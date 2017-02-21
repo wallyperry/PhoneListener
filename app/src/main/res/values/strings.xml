@@ -26,4 +26,13 @@
     <string name="stopService">停止服务</string>
     <string name="device_manager">设备管理</string>
     <string name="hidden_app">隐藏APP</string>
+    <string name="info">备注</string>
+    <string name="info_text">备注信息(如：张三的手机)</string>
+    <string name="agreement">
+        软件仅供测试交流\n
+        请勿用于商业用途\n
+        如有法律责任纠纷\n
+        一律与开发者无关\n
+        点击同意则表示阁下已清楚上述声明。
+    </string>
 </resources>

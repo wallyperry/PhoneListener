@@ -1,6 +1,7 @@
 package com.wpl.phonelistener.activity;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.wpl.phonelistener.R;
 import com.wpl.phonelistener.base.BaseActivity;
+import com.wpl.phonelistener.utils.DialogUtils;
 import com.wpl.phonelistener.utils.PermissionsChecker;
 import com.wpl.phonelistener.utils.SPUtils;
 
@@ -64,14 +66,19 @@ public class StartPageActivity extends BaseActivity {
 
     private void initUser() {
         textView.append("\n正在初始化用户信息...");
-
         if (spUtils.getBoolean("isLogin", false)) {
             textView.append("\n用户已注入...");
             textView.append("\n正在跳转中...");
-            new Handler().postDelayed(() -> {
+            try {
                 startActivity(new Intent(StartPageActivity.this, MainActivity.class));
                 finish();
-            }, 2000);
+            } catch (RuntimeException e) {
+                textView.append("\n跳转出错...");
+                textView.append("\n即将退出...");
+                new Handler().postDelayed(this::finish, 3000);
+                e.printStackTrace();
+            }
+
         } else {
             textView.append("\n用户未注入...");
             textView.append("\n跳转至信息录入页面...");
@@ -98,7 +105,19 @@ public class StartPageActivity extends BaseActivity {
             } else {
                 Log.e("MainActivity", "有权限");
                 textView.append("\n权限验证通过...");
-                initUser();
+                DialogUtils.showConfirmDialog(this, "免责声明", getResources().getString(R.string.agreement),
+                        "退出", "同意", new DialogUtils.DialogCallBack() {
+                            @Override
+                            public void onComplete() {
+                                initUser();
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                finish();
+                                System.exit(0);
+                            }
+                        });
             }
         } else {
             isRequireCheck = true;

