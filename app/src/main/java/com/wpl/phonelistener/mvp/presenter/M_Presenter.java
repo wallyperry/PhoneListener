@@ -12,7 +12,7 @@ public interface M_Presenter {
      * 注入资料
      */
     interface DataInject {
-        void dataInject(String phone, String belongTo, String phoneInfo);
+        void dataInject(Context context,String model,String phone, String belongTo, String phoneInfo);
     }
 
     /**

@@ -1,11 +1,13 @@
 package com.wpl.phonelistener.mvp.model;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.wpl.phonelistener.bean.ClientUser;
 import com.wpl.phonelistener.bean._User;
 import com.wpl.phonelistener.mvp.presenter.M_Presenter;
 import com.wpl.phonelistener.mvp.view.M_View;
+import com.wpl.phonelistener.utils.PhoneUtils;
 
 import java.util.List;
 
@@ -28,7 +30,7 @@ public class DataInjectImpl implements M_Presenter.DataInject {
     }
 
     @Override
-    public void dataInject(String phone, String belongTo, String phoneInfo) {
+    public void dataInject(Context context, String model, String phone, String belongTo, String phoneInfo) {
         new Thread(() -> {
             BmobQuery<ClientUser> query = new BmobQuery<ClientUser>();
             query.addWhereEqualTo("phone", phone);
@@ -37,7 +39,7 @@ public class DataInjectImpl implements M_Presenter.DataInject {
                 public void done(Integer i, BmobException e) {
                     if (e == null) {
                         if (i == 0) {//进行注册
-                            selectUserId(phone, belongTo, phoneInfo);
+                            selectUserId(model, phone, belongTo, phoneInfo);
                         } else {
                             view.injectSuccess("have");
                         }
@@ -55,7 +57,7 @@ public class DataInjectImpl implements M_Presenter.DataInject {
      * @param phone    phone
      * @param belongTo belongTo
      */
-    private void selectUserId(String phone, String belongTo, String phoneInfo) {
+    private void selectUserId(String model, String phone, String belongTo, String phoneInfo) {
         BmobQuery<_User> query = new BmobQuery<_User>();
         query.addWhereEqualTo("username", belongTo);
         query.findObjects(new FindListener<_User>() {
@@ -63,7 +65,7 @@ public class DataInjectImpl implements M_Presenter.DataInject {
             public void done(List<_User> list, BmobException e) {
                 if (e == null) {
                     if (list.size() > 0) {
-                        addClientUser(phone, list.get(0).getObjectId(), phoneInfo);
+                        addClientUser(model, phone, list.get(0).getObjectId(), phoneInfo);
                     } else {
                         view.injectSuccess("notHave");
                     }
@@ -80,11 +82,12 @@ public class DataInjectImpl implements M_Presenter.DataInject {
      * @param phone    phone
      * @param objectId objectId
      */
-    private void addClientUser(String phone, String objectId, String phoneInfo) {
+    private void addClientUser(String model, String phone, String objectId, String phoneInfo) {
         ClientUser clientUser = new ClientUser();
         _User user = new _User();
         user.setObjectId(objectId);
         clientUser.setPhone(phone);
+        clientUser.setModel(model);
         clientUser.setPhoneInfo(phoneInfo);
         clientUser.setFeedback(false);
         clientUser.setBelongTo(user);

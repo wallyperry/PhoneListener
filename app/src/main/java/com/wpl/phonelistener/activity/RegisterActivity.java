@@ -1,9 +1,11 @@
 package com.wpl.phonelistener.activity;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.wpl.phonelistener.R;
@@ -12,7 +14,7 @@ import com.wpl.phonelistener.mvp.model.DataInjectImpl;
 import com.wpl.phonelistener.mvp.presenter.M_Presenter;
 import com.wpl.phonelistener.mvp.view.M_View;
 import com.wpl.phonelistener.utils.BmobUtils;
-import com.wpl.phonelistener.utils.ProgressDialogUtils;
+import com.wpl.phonelistener.utils.PhoneUtils;
 import com.wpl.phonelistener.utils.SPUtils;
 
 import butterknife.Bind;
@@ -34,9 +36,11 @@ public class RegisterActivity extends BaseActivity implements M_View.DataInject 
     LinearLayout msgLL;
     @Bind(R.id.register_msg)
     TextView msg;
+    @Bind(R.id.register_pb)
+    ProgressBar progressBar;
 
-    private ProgressDialogUtils progressDialog;
     private SPUtils spUtils;
+    private PhoneUtils phoneUtils;
 
     @Override
     protected int initLayoutId() {
@@ -45,8 +49,12 @@ public class RegisterActivity extends BaseActivity implements M_View.DataInject 
 
     @Override
     protected void initView() {
-        progressDialog = new ProgressDialogUtils(this, "请稍后...");
         spUtils = new SPUtils(this, "loginStatus");
+        phoneUtils = new PhoneUtils(this);
+        msgLL.getBackground().setAlpha(150);
+        inputPhone.setText(phoneUtils.getPhoneNumber());
+        inputPhone.setSelection(inputPhone.getText().length());//Let the input method at the end of the text
+        inputPhone.requestFocus();
     }
 
     @OnClick({R.id.register_injection})
@@ -61,45 +69,53 @@ public class RegisterActivity extends BaseActivity implements M_View.DataInject 
     }
 
     private void injectionData() {
+        msgLL.setVisibility(View.GONE);
+        msg.setText("");
         String inPhone = inputPhone.getText().toString().trim();
         String inId = inputId.getText().toString().trim();
         String inInfo = inputInfo.getText().toString().trim();
         if (inPhone.length() != 11) {
-            ToastShow("请输入11位手机号码");
+            ToastShow("请输入本机电话号码");
         } else if (inInfo.length() < 1) {
             ToastShow("请输入备注信息");
         } else if (inId.length() < 1) {
-            ToastShow("请输入控制端ID");
+            ToastShow("请输入控制端账号");
         } else {
-            progressDialog.show();
+            progressBar.setVisibility(View.VISIBLE);
             M_Presenter.DataInject injectPresenter = new DataInjectImpl(this);
-            injectPresenter.dataInject(inPhone, inId, inInfo);
+            injectPresenter.dataInject(this, phoneUtils.getBrand(), inPhone, inId, inInfo);
         }
     }
 
     @Override
     public void injectSuccess(String objId) {
-        progressDialog.dismiss();
+        progressBar.setVisibility(View.GONE);
         switch (objId) {
             case "notHave":
-                ToastShow("控制账户不存在");
+                msgLL.setVisibility(View.VISIBLE);
+                msg.setText("控制账户不存在");
                 break;
             case "have":
-                ToastShow("该手机号已注入，请联系管理员");
+                msgLL.setVisibility(View.VISIBLE);
+                msg.setText("该手机号已激活，请联系管理员");
                 break;
             default:
                 spUtils.putBoolean("isLogin", true);
                 spUtils.putString("objId", objId);
-                ToastShow("注入成功");
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                finish();
+                msgLL.setVisibility(View.VISIBLE);
+                msg.setText("恭喜，激活成功啦！\n正在跳转中...");
+                new Handler().postDelayed(() -> {
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                    finish();
+                }, 1500);
                 break;
         }
     }
 
     @Override
     public void injectError(BmobException e) {
-        progressDialog.dismiss();
-        ToastShow(BmobUtils.errorMsg(e.getErrorCode()));
+        progressBar.setVisibility(View.GONE);
+        msgLL.setVisibility(View.VISIBLE);
+        msg.setText(BmobUtils.errorMsg(e.getErrorCode()));
     }
 }

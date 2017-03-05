@@ -14,14 +14,13 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="dataInjection">信息注入</string>
+    <string name="dataInjection">激活</string>
     <string name="phone">手机</string>
     <string name="input_local_phone">请输入本机号码</string>
-    <string name="injection">注入</string>
+    <string name="injection">立即激活</string>
     <string name="id">ID</string>
-    <string name="control">控制</string>
-    <string name="input_local_control">请输入控制端账户</string>
-    <string name="homtPage">主页面</string>
+    <string name="control">控制者</string>
+    <string name="input_local_control">请输入控制者账户</string>
     <string name="startService">启动服务</string>
     <string name="stopService">停止服务</string>
     <string name="device_manager">设备管理</string>

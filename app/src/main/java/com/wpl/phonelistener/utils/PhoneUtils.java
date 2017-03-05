@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * Created by 培龙 on 2017/2/14.
  */
 
@@ -75,6 +74,9 @@ public class PhoneUtils {
         final ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
 
+        if (services == null) {
+            return false;
+        }
         for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
             if (runningServiceInfo.service.getClassName().equals(serviceName)) {
                 return true;
@@ -102,12 +104,21 @@ public class PhoneUtils {
     }
 
     /**
-     * 获取设备品牌型号
+     * 获取设备型号
      *
-     * @return 手机品牌型号
+     * @return 手机型号
      */
     public String getModel() {
-        return "" + Build.BRAND + " " + Build.MODEL;
+        return " " + Build.MODEL;
+    }
+
+    /**
+     * 获取设备品牌
+     *
+     * @return 品牌
+     */
+    public String getBrand() {
+        return "" + Build.BRAND;
     }
 
     /**
@@ -144,7 +155,7 @@ public class PhoneUtils {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         int s = calendar.get(Calendar.SECOND);
         return "" + year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + s;

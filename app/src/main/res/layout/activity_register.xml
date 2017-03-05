@@ -24,8 +24,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
+
+        <!--信息提示-->
+        <LinearLayout
+            android:id="@+id/register_msgLL"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="1px"
+            android:background="@color/black"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/register_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/content_text_size_12" />
+
+        </LinearLayout>
 
         <!--手机-->
         <LinearLayout
@@ -58,7 +81,7 @@
 
         </LinearLayout>
 
-        <!--控制端ID-->
+        <!--备注-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -88,7 +111,7 @@
 
         </LinearLayout>
 
-        <!--控制端ID-->
+        <!--控制端账号-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -118,38 +141,26 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/register_msgLL"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="1px"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/register_msg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/content_text_size_12" />
-
-        </LinearLayout>
-
-        <!--注入按钮-->
+        <!--激活按钮-->
         <LinearLayout
             android:id="@+id/register_injection"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="1px"
+            android:layout_marginTop="10dp"
             android:background="@color/white"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center"
+            android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
+
+            <ProgressBar
+                android:id="@+id/register_pb"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="wrap_content"

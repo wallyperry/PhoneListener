@@ -1,4 +1,3 @@
-
 <device-admin xmlns:Android="http://schemas.android.com/apk/res/android">
     <!--
           limit-password  设置密码的规则
@@ -7,7 +6,4 @@
           force-lock 设备自动锁屏
           wipe-data 删除全部的数据
          -->
-    <uses-policies>
-
-    </uses-policies>
 </device-admin>

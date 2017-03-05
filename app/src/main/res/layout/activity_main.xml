@@ -11,13 +11,14 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/activity_toolbar_height"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:elevation="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/homtPage"
+            android:text="@string/app_name"
             android:textSize="@dimen/activity_toolbar_text_size" />
 
     </RelativeLayout>
@@ -26,97 +27,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
 
-        <!--启动服务-->
         <LinearLayout
-            android:id="@+id/startService"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="1px"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/startService"
-                android:textSize="@dimen/content_text_size_12" />
+            <ScrollView
+                android:id="@+id/main_sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/black">
+
+                <TextView
+                    android:id="@+id/main_msgTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/black"
+                    android:padding="16dp"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </ScrollView>
 
         </LinearLayout>
-
-        <!--停止服务-->
-        <LinearLayout
-            android:id="@+id/stopService"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="1px"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/stopService"
-                android:textSize="@dimen/content_text_size_12" />
-
-        </LinearLayout>
-
-        <!--申请设备管理-->
-        <LinearLayout
-            android:id="@+id/deviceManager"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="1px"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/device_manager"
-                android:textSize="@dimen/content_text_size_12" />
-
-        </LinearLayout>
-
-        <!--隐藏APP-->
-        <LinearLayout
-            android:id="@+id/hiddenApp"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="1px"
-            android:background="@color/white"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hidden_app"
-                android:textSize="@dimen/content_text_size_12" />
-
-        </LinearLayout>
-
 
     </LinearLayout>
 
